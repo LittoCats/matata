@@ -20,15 +20,23 @@
 
 from argparse import ArgumentParser
 from functools import partial, update_wrapper
+from inspect import isawaitable
+import asyncio
 
 
 class Callable:
     def __init__(self, func):
         update_wrapper(self, func)
-        self.func = func
         self.options = []
         self.parser = None
         self.subparsers = None
+
+        def impl(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if isawaitable(result):
+                asyncio.run(result)
+
+        self.func = impl
 
     def __call__(self, *args, **kwargs):
         options = self.parser.parse_args()

@@ -19,74 +19,54 @@
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 
 
-from argparse import *
-import os
+from matata.utils.command import command, option
+import asyncio
 
 
-def migrate_init(options):
-    print(f"migrate: {options}")
+@command(prog="matata")
+@option('--version', '-v', action="version", version="matata v1.3.7")
+async def main(parser, options):
+    print('main......')
+    count = 5
+    while count > 0:
+        await asyncio.sleep(1)
+        print(f'{count} ......')
+        count = count - 1
+    print('exit')
 
 
-def migrate_make(options):
-    print(f"migrate: {options}")
+@main.subcommand
+@option('dev', action="store_true")
+@option('--address', help="inet address to bind")
+@option('--port', type=int, default=8080, help="port to listen")
+async def start(parser, options):
+    print('star......')
 
 
-def migrate_upgrade(options):
-    print(f"migrate: {options}")
+@main.subcommand
+def migrate(parser, options):
+    parser.print_help()
 
 
-def migrate_downgrade(options):
-    print(f"migrate: {options}")
+@migrate.subcommand(prog='init')
+def init_migration(parser, options):
+    print('init migration')
 
 
-def test(options):
-    print(f"op: {options}")
+@migrate.subcommand(prog='make')
+@option('name', nargs='+')
+def make_migration(parser, options):
+    print('make migration', '_'.join(options.name))
 
 
-def start(options):
-    print(f"o: {options}")
+@migrate.subcommand(prog='upgrade')
+def upgrade_migration(parser, options):
+    print('upgrade migration')
 
 
-def main():
-    parser = ArgumentParser(prog='matata')
-    parser.set_defaults(func=lambda x: parser.print_help())
-    parser.add_argument('--version', '-v', action='version', version='matata 1.0.11')
-    subparsers = parser.add_subparsers(title='commands')
-
-    # database migration
-    migrator = subparsers.add_parser('migrate')
-    migrator.set_defaults(func=lambda x: migrator.print_help())
-
-    migrators = migrator.add_subparsers(title='commands')
-
-    initmigrator = migrators.add_parser('init')
-    initmigrator.set_defaults(func=migrate_init)
-    initmigrator.add_argument('workdir', nargs='?', default=os.getcwd())
-
-    makemigrator = migrators.add_parser('make')
-    makemigrator.set_defaults(func=migrate_make)
-    makemigrator.add_argument('name', nargs='?')
-
-    upgrademigrator = migrators.add_parser('upgrade')
-    upgrademigrator.set_defaults(func=migrate_upgrade)
-
-    downgrademigrator = migrators.add_parser('downgrade')
-    downgrademigrator.set_defaults(func=migrate_downgrade)
-
-    # Test
-    testor = subparsers.add_parser('test')
-    testor.set_defaults(func=test)
-
-    startor = subparsers.add_parser('start')
-    startor.set_defaults(func=start)
-
-    startor.add_argument('dev', nargs='?', default=False, type=bool)
-    startor.add_argument('--debug', action='store_true')
-    startor.add_argument('--autoreload', action='store_true')
-    startor.add_argument('--port', default=8080, type=int)
-
-    options = parser.parse_args()
-    options.func(options)
+@migrate.subcommand(prog='downgrade')
+def downgrade_migration(parser, options):
+    print('downgrade migration')
 
 
 main()
