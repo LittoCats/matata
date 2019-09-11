@@ -20,7 +20,6 @@
 
 FORGROUND = 'forground', '38'
 BACKGROUND = 'background', '48'
-GRAYCOLOR = '2'
 FULLCOLOR = '5'
 
 
@@ -194,27 +193,7 @@ class StyledTerminalOutput(object):
         self.style.sethidden(False)
         return self
 
-    def grey(self, color: int, text: str = None):
-        """
-        设置灰度背景
-        color: 1 ~ 128
-        """
-        self.style.setColor(BACKGROUND, color, GRAYCOLOR)
-        if text is not None:
-            self.__call__(text)
-        return self
-
-    def greytext(self, color: int, text: str = None):
-        """
-        设置灰度文字
-        color: 1 ~ 128
-        """
-        self.style.setColor(FORGROUND, color, GRAYCOLOR)
-        if text is not None:
-            self.__call__(text)
-        return self
-
-    def color(self, color: int, text: str = None):
+    def forground(self, color: int, text: str = None):
         """
         设置彩色背景
         color: 1 ~ 256
@@ -224,7 +203,7 @@ class StyledTerminalOutput(object):
             self.__call__(text)
         return self
 
-    def colortext(self, color: int, text: str = None):
+    def background(self, color: int, text: str = None):
         """
         设置彩色文字
         color: 1 ~ 256
@@ -233,3 +212,18 @@ class StyledTerminalOutput(object):
         if text is not None:
             self.__call__(text)
         return self
+
+if __name__ == "__main__":
+    msgs = []
+    for row in range(2):
+        for column in range(8):
+            index = row * 8 + column
+            msgs.append("\033[48;5;%sm %4s \033[0m" % (index, index))
+        msgs.append("\n")
+    msgs.append("\n")
+    for row in range(40):
+        for column in range(6):
+            index = 16 + row * 6 + column
+            msgs.append("\033[48;5;%sm %6s \033[0m" % (index, index))
+        msgs.append("\n")
+    print(''.join(msgs))
