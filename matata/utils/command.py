@@ -31,17 +31,17 @@ class Callable:
         self.parser = None
         self.subparsers = None
 
-        def impl(*args, **kwargs):
+        async def impl(*args, **kwargs):
             result = func(*args, **kwargs)
             if isawaitable(result):
-                asyncio.run(result)
+                await result
 
         self.func = impl
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self):
         options = self.parser.parse_args()
         func = options.func
-        func(options)
+        asyncio.run(func(options))
 
     def add_option(self, *args, **kwargs):
         self.options.append((args, kwargs))
