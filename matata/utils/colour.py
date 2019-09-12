@@ -213,6 +213,7 @@ class StyledTerminalOutput(object):
             self.__call__(text)
         return self
 
+
 if __name__ == "__main__":
     msgs = []
     for row in range(2):

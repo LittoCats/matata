@@ -49,8 +49,6 @@ def main():
                 Label("password:")
                 Input(name='password', type='password')
             Button('Submit', type="submit")
-
-
 ```
 
 可以这样定义一个组件：
@@ -67,7 +65,7 @@ class LoginView(View):
                 Input(name='password', type='password')
 ```
 
-所有的一切者一标准的 python 代码；
+所有的一切都是标准的 python 代码；
 
 受 React 语法影响，本来有类似 pyx 的想法，但即刻转念，python 语法本就挺好的。
 """

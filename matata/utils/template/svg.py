@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @DATE    : 2019-09-11 13:16:54 CST
+# @DATE    : 2019-09-11 23:12:12
 # @AUTHOR  : 程巍巍 (littocats@gmail.com)
 #
 #
@@ -18,9 +18,22 @@
 #
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 
-from unittest import TestCase
+
+class Svg:
+    pass
 
 
-class TestStyle(TestCase):
-    def test_pass(self):
-        pass
+class D:
+    pass
+
+
+class Rect:
+    pass
+
+
+class Circle:
+    pass
+
+
+class Arc:
+    pass

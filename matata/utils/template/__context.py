@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @DATE    : 2019-09-11 13:16:54 CST
+# @DATE    : 2019-09-11 23:03:47
 # @AUTHOR  : 程巍巍 (littocats@gmail.com)
 #
 #
@@ -18,9 +18,30 @@
 #
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 
-from unittest import TestCase
+
+"""Just now, can't be used in async context
+"""
+
+import threading
 
 
-class TestStyle(TestCase):
-    def test_pass(self):
-        pass
+__stacks = dict()
+
+
+def _stack():
+    tid = threading.get_ident()
+    stack = __stacks.get(tid, None)
+    if stack is None:
+        stack = list()
+        __stacks[tid] = stack
+    return stack
+
+
+def push_context():
+    stack = _stack()
+    stack.append(list())
+
+
+def pop_context():
+    stack = _stack()
+    return stack.pop()
